@@ -38,25 +38,35 @@ export function AuthProvider({ children }) {
   };
 
   const login = async (email, password) => {
-    const response = await axios.post('/api/auth/login', { email, password });
-    const { token, user } = response.data;
-    localStorage.setItem('token', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    setUser(user);
-    return user;
+    try {
+      const response = await axios.post('/api/auth/login', { email, password });
+      const { token, user } = response.data;
+      localStorage.setItem('token', token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setUser(user);
+      return user;
+    } catch (error) {
+      // Re-throw the error so it can be caught in the component
+      throw error;
+    }
   };
 
   const register = async (name, email, password) => {
-    const response = await axios.post('/api/auth/register', {
-      name,
-      email,
-      password,
-    });
-    const { token, user } = response.data;
-    localStorage.setItem('token', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    setUser(user);
-    return user;
+    try {
+      const response = await axios.post('/api/auth/register', {
+        name,
+        email,
+        password,
+      });
+      const { token, user } = response.data;
+      localStorage.setItem('token', token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setUser(user);
+      return user;
+    } catch (error) {
+      // Re-throw the error so it can be caught in the component
+      throw error;
+    }
   };
 
   const logout = () => {

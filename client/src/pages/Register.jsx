@@ -26,7 +26,20 @@ export default function Register() {
       await register(name, email, password);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed');
+      // Handle different error formats
+      if (err.response?.data?.errors) {
+        // Validation errors come as an array
+        const errorMessages = err.response.data.errors.map(e => e.msg).join(', ');
+        setError(errorMessages);
+      } else if (err.response?.data?.message) {
+        // Standard error message
+        setError(err.response.data.message);
+      } else if (err.message) {
+        // Network or other errors
+        setError(err.message);
+      } else {
+        setError('Registration failed. Please check your connection and try again.');
+      }
     }
   };
 

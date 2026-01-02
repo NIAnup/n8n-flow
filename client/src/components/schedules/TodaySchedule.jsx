@@ -29,14 +29,17 @@ export default function TodaySchedule() {
 
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
-    if (type === 'checkbox') {
-      setFormData({ ...formData, [name]: checked });
-    } else if (name === 'platforms') {
+    if (name === 'platforms') {
+      // Handle platform checkboxes (array of selected platforms)
       const platforms = formData.platforms.includes(value)
         ? formData.platforms.filter((p) => p !== value)
         : [...formData.platforms, value];
       setFormData({ ...formData, platforms });
+    } else if (type === 'checkbox') {
+      // Handle regular checkboxes (boolean values)
+      setFormData({ ...formData, [name]: checked });
     } else {
+      // Handle text inputs, selects, etc.
       setFormData({ ...formData, [name]: value });
     }
   };
